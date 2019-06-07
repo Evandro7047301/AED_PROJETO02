@@ -36,7 +36,6 @@ class Lista{
 public:
     Lista();
     ~Lista();
-    int tamanho;
     void inserirFrente(const TYPE &);
     void inserirAtras(const TYPE &);
     bool removerFrente();
@@ -55,7 +54,6 @@ private:
 
 template<class TYPE>
 Lista<TYPE>::Lista(){
-    tamanho = 0;
     primeiroPtr = 0;
     ultimoPtr = 0;
 }
@@ -83,7 +81,7 @@ void Lista<TYPE>::inserirFrente(const TYPE &valor){
         primeiroPtr = ultimoPtr = novoPtr;
     }
     else{
-        tamanho += 1;
+
         novoPtr->proximoPtr = primeiroPtr;
         primeiroPtr = novoPtr;
     }
@@ -98,7 +96,7 @@ void Lista<TYPE>::inserirAtras(const TYPE &valor){
         primeiroPtr = ultimoPtr = novoPtr;
     }
     else{
-        tamanho += 1;
+
         ultimoPtr-> proximoPtr = novoPtr;
         ultimoPtr = novoPtr;
     }
@@ -120,7 +118,7 @@ bool Lista<TYPE>::removerFrente(){
             primeiroPtr = primeiroPtr->proximoPtr;
         }
 
-        tamanho -= 1;
+
         delete temporarioPtr;
         return true;
 
@@ -148,7 +146,7 @@ bool Lista<TYPE>::removerAtras(TYPE &valor){
             atualPtr->proximoPtr = 0;
         }
 
-        tamanho -= 1;
+
         valor = temporarioPtr->data;
         delete temporarioPtr;
         return true;
@@ -238,11 +236,11 @@ int h(string chave){
 }
 
 template <class TYPE>
-class TabelaHash: Lista<TYPE>{
+class TabelaHash{
 
 public:
 
-    Lista<Dupla> th[TAM];
+    Lista<TYPE> th[TAM];
 
     TabelaHash(){
         for(int i = 0; i < TAM; i++){
@@ -419,17 +417,20 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
 
 int main(){
 
-    //TabelaHash<Dupla> hash;
-    int valor;
+    // TabelaHash<Dupla> hash;
+    // hash.inserirElemento("e","d");
+    // cout << hash.buscarElemento("e");
 
-    Arvore<int> arvoreInt;
-    cout << "insira 10 valores inteiros\n";
-
-    for(int i = 0; i < 3; i++){
-        cin >> valor;
-        arvoreInt.insereNo(valor);
-    }
-    cout << arvoreInt.busca(2);
+    // int valor;
+    //
+    // Arvore<int> arvoreInt;
+    // cout << "insira 10 valores inteiros\n";
+    //
+    // for(int i = 0; i < 3; i++){
+    //     cin >> valor;
+    //     arvoreInt.insereNo(valor);
+    // }
+    // cout << arvoreInt.busca(2);
     // cout << "\nPre ordem\n";
     // arvoreInt.percorrePreOrdem();
     // cout << "\n\nCentral\n";
