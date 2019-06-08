@@ -250,6 +250,7 @@ template <class TYPE>
 class TabelaHash{
 private:
     Lista<TYPE> th[TAM];
+    int tamanhoString;
 public:
     TabelaHash();
     ~TabelaHash(){};
@@ -306,6 +307,7 @@ public:
         ptrEsquedo = 0;
         data = d;
         ptrDireito = 0;
+        altura = 0;
     }
 
     TYPE getData() const{
@@ -320,9 +322,16 @@ public:
     Arvore();
     ~Arvore(){}
 
+    int calculaAltura(NoArvore<TYPE>){
+        if (ptrRaiz == 0)
+            return -1;
+        else
+            return ptrRaiz->altura;
+    }
+
     void insereNo(const TYPE &);
     TYPE busca(const TYPE &);
-    // void percorrePreOrdem () const;
+    void percorrePreOrdem () const;
     // void percorreCentral () const;
     // void percorrePosOrdem () const;
 
@@ -330,7 +339,7 @@ private:
     NoArvore <TYPE> *ptrRaiz;
     TYPE ajudanteDeBusca (NoArvore <TYPE> **, const TYPE &);
     void ajudanteDeInsereNo (NoArvore <TYPE> **, const TYPE &);
-    // void ajudantePercorrePreOrdem (NoArvore <TYPE> *) const;
+    void ajudantePercorrePreOrdem (NoArvore <TYPE> *) const;
     // void ajudantePercorreCentral (NoArvore <TYPE> *) const;
     // void ajudantePercorrePosOrdem (NoArvore <TYPE> *) const;
 };
@@ -397,19 +406,19 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
     }
 }
 
-// template <class TYPE>
-// void Arvore<TYPE>::percorrePreOrdem() const{
-//     ajudantePercorrePreOrdem(ptrRaiz);
-// }
-//
-// template <class TYPE>
-// void Arvore<TYPE>::ajudantePercorrePreOrdem(NoArvore<TYPE> *ptr) const{
-//     if(ptr != 0){
-//         cout << ptr->data<<' ';
-//         ajudantePercorrePreOrdem(ptr->ptrEsquedo);
-//         ajudantePercorrePreOrdem(ptr->ptrDireito);
-//     }
-// }
+template <class TYPE>
+void Arvore<TYPE>::percorrePreOrdem() const{
+    ajudantePercorrePreOrdem(ptrRaiz);
+}
+
+template <class TYPE>
+void Arvore<TYPE>::ajudantePercorrePreOrdem(NoArvore<TYPE> *ptr) const{
+    if(ptr != 0){
+        cout << ptr->getData()<<' ';
+        ajudantePercorrePreOrdem(ptr->ptrEsquedo);
+        ajudantePercorrePreOrdem(ptr->ptrDireito);
+    }
+}
 //
 // template <class TYPE>
 // void Arvore<TYPE>::percorreCentral() const{
@@ -435,7 +444,7 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
 //     if(ptr != 0){
 //         ajudantePercorrePosOrdem(ptr->ptrEsquedo);
 //         ajudantePercorrePosOrdem(ptr->ptrDireito);
-//         cout << ptr -> data << ' ';
+//         cout << ptr -> getData() << ' ';
 //     }
 // }
 
@@ -456,6 +465,8 @@ int main(){
             cout << linha << '\n';
         }
     }
+    cout << "\nPercorrer...\n";
+    arvore.percorrePreOrdem();
     cout << "\nResultado da busca: " << arvore.busca("chave") << endl;
 
     arquivo.close();
