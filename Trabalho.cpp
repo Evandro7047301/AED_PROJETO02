@@ -1,19 +1,23 @@
-#include <iostream>
-#include <cstdlib>
-#include <cstring>
-#include <string>
+#include<iostream>
+#include<cstdlib>
+#include<cstring>
+#include<string>
+#include<fstream>
+
 const int PRIMO = 37;
 const int TAM = 7;
+
 using namespace std;
 
 template <class TYPE>
 class No{
+private:
+    TYPE data;
 public:
+    No<TYPE> *proximoPtr;
+
     No(const TYPE &);
     TYPE getData()const;
-
-    TYPE data;
-    No<TYPE> *proximoPtr;
 };
 
 template<class TYPE>
@@ -24,42 +28,44 @@ No<TYPE>::No(const TYPE &info)
 }
 
 template<class TYPE>
-
 TYPE No<TYPE>::getData()const{
     return data;
 }
 
 template<class TYPE>
-
 class Lista{
-
 public:
     Lista();
     ~Lista();
-    void inserirFrente(const TYPE &);
+
+    int getTamanho();
+//    void inserirFrente(const TYPE &);
     void inserirAtras(const TYPE &);
     bool removerFrente();
-    bool removerAtras(TYPE &);
-    bool estaVazia()const;
+    bool removerAtras();
     void print()const;
     string busca(const string &);
     string get(const int &);
 
 private:
+    int tamanho;
+    bool estaVazia()const;
+
     No<TYPE> *primeiroPtr;
     No<TYPE> *ultimoPtr;
 
     No<TYPE> *getNovoNo(const TYPE &);
 };
 
+
 template<class TYPE>
 Lista<TYPE>::Lista(){
+    tamanho = 0;
     primeiroPtr = 0;
     ultimoPtr = 0;
 }
 
 template<class TYPE>
-
 Lista<TYPE>::~Lista(){
     if(!estaVazia()){
         No <TYPE> *atualPtr = primeiroPtr;
@@ -74,18 +80,23 @@ Lista<TYPE>::~Lista(){
 }
 
 template<class TYPE>
-void Lista<TYPE>::inserirFrente(const TYPE &valor){
-    No<TYPE> *novoPtr = getNovoNo(valor);
-
-    if(estaVazia()){
-        primeiroPtr = ultimoPtr = novoPtr;
-    }
-    else{
-
-        novoPtr->proximoPtr = primeiroPtr;
-        primeiroPtr = novoPtr;
-    }
+int Lista<TYPE>::getTamanho(){
+    return tamanho;
 }
+
+// template<class TYPE>
+// void Lista<TYPE>::inserirFrente(const TYPE &valor){
+//     No<TYPE> *novoPtr = getNovoNo(valor);
+//
+//     if(estaVazia()){
+//         primeiroPtr = ultimoPtr = novoPtr;
+//     }
+//     else{
+//         tamanho += 1;
+//         novoPtr->proximoPtr = primeiroPtr;
+//         primeiroPtr = novoPtr;
+//     }
+// }
 
 template<class TYPE>
 void Lista<TYPE>::inserirAtras(const TYPE &valor){
@@ -96,7 +107,7 @@ void Lista<TYPE>::inserirAtras(const TYPE &valor){
         primeiroPtr = ultimoPtr = novoPtr;
     }
     else{
-
+        tamanho += 1;
         ultimoPtr-> proximoPtr = novoPtr;
         ultimoPtr = novoPtr;
     }
@@ -118,7 +129,7 @@ bool Lista<TYPE>::removerFrente(){
             primeiroPtr = primeiroPtr->proximoPtr;
         }
 
-
+        tamanho -= 1;
         delete temporarioPtr;
         return true;
 
@@ -126,7 +137,7 @@ bool Lista<TYPE>::removerFrente(){
 }
 
 template<class TYPE>
-bool Lista<TYPE>::removerAtras(TYPE &valor){
+bool Lista<TYPE>::removerAtras(){
     if(estaVazia()){
         return false;
     }
@@ -146,8 +157,8 @@ bool Lista<TYPE>::removerAtras(TYPE &valor){
             atualPtr->proximoPtr = 0;
         }
 
-
-        valor = temporarioPtr->data;
+        tamanho -= 1;
+        //valor = temporarioPtr->getData();
         delete temporarioPtr;
         return true;
 
@@ -174,7 +185,7 @@ void Lista<TYPE>::print()const{
     No<TYPE> *atualPtr = primeiroPtr;
 
     while(atualPtr != 0){
-        cout << atualPtr->data;
+        cout << atualPtr->getData();
         atualPtr = atualPtr->proximoPtr;
 
     }
@@ -187,8 +198,8 @@ string Lista<TYPE>::busca(const string &chaveRecebida){
 
 
     while(atualPtr != 0){
-        if(atualPtr->data.chave == chaveRecebida){
-            return atualPtr->data.simbolo;
+        if(atualPtr->getData() == chaveRecebida){
+            return atualPtr->getData();
         }
         atualPtr = atualPtr->proximoPtr;
     }
@@ -206,7 +217,7 @@ string Lista<TYPE>::get(const int &indice){
 
     while(atualPtr != 0){
         if(contador == indice){
-            return atualPtr->data;
+            return atualPtr->getData();
         }
         contador += 1;
         atualPtr = atualPtr->proximoPtr;
@@ -215,77 +226,89 @@ string Lista<TYPE>::get(const int &indice){
     return "-1";
 }
 
-struct Dupla{
-    string simbolo;
-    string chave;
+// struct Dupla{
+//     string simbolo;
+//     string chave;
+// };
+
+// int strParaInt(string chave){
+//     int acumulador = 0;
+//     int chaveTam = strlen(chave.c_str());
+//     for(int i = 0; i < chaveTam; i++){
+//         acumulador += (int)chave[i];
+//     }
+//     acumulador *= PRIMO;
+//     return acumulador;
+// }
+//
+// int h(string chave){
+//
+//     return strParaInt(chave) % TAM;
+// }
+
+template <class TYPE>
+class TabelaHash{
+private:
+    Lista<TYPE> th[TAM];
+public:
+    TabelaHash();
+    ~TabelaHash(){};
+
+    int hash(string);
+    void inserirElemento(const string &);
+    string buscarElemento(const string &chave);
 };
 
-int strParaInt(string chave){
+template<class TYPE>
+TabelaHash<TYPE>::TabelaHash(){
+    for(int i = 0; i < TAM; i++){
+        Lista<TYPE> lista;
+        th[i] = lista;
+    }
+}
+
+template<class TYPE>
+int TabelaHash<TYPE>::hash(string chave){
     int acumulador = 0;
+
     int chaveTam = strlen(chave.c_str());
     for(int i = 0; i < chaveTam; i++){
         acumulador += (int)chave[i];
     }
     acumulador *= PRIMO;
-    return acumulador;
+
+    return acumulador % TAM;
 }
 
-int h(string chave){
+template<class TYPE>
+void TabelaHash<TYPE>::inserirElemento(const string &data){
+    int i = hash(data);
+    th[i].inserirAtras(data);
+}
 
-    return strParaInt(chave) % TAM;
+template<class TYPE>
+string TabelaHash<TYPE>::buscarElemento(const string &chave){
+    string chaveStr = chave;
+    int i = hash(chave);
+    return th[i].busca(chaveStr);
 }
 
 template <class TYPE>
-class TabelaHash{
-
-public:
-
-    Lista<TYPE> th[TAM];
-
-    TabelaHash(){
-        for(int i = 0; i < TAM; i++){
-            Lista<TYPE> lista;
-            th[i] = lista;
-        }
-
-    }
-
-    ~TabelaHash(){};
-
-    void inserirElemento(const string &chave, const string &data){
-        int i = h(chave);
-        // cout<< "i:"<<i<<"\n";
-        Dupla dupla = {data,chave};
-
-        th[i].inserirAtras(dupla);
-    }
-
-
-     string buscarElemento(const string &chave){
-        string chaveStr = chave;
-        int i = h(chave);
-        return th[i].busca(chaveStr);
-    }
-
-
-
-};
-
-template <class TYPE>
-
 class NoArvore{
+private:
+    TYPE data;
+    int altura;
 public:
     NoArvore <TYPE> *ptrEsquedo;
-    TYPE data;
     NoArvore <TYPE> *ptrDireito;
-    int altura;
+
     NoArvore(const TYPE &d){
         ptrEsquedo = 0;
         data = d;
         ptrDireito = 0;
     }
 
-    TYPE pegarData() const{
+    TYPE getData() const{
         return data;
     }
 };
@@ -295,6 +318,7 @@ template <class TYPE>
 class Arvore{
 public:
     Arvore();
+    ~Arvore(){}
 
     void insereNo(const TYPE &);
     TYPE busca(const TYPE &);
@@ -325,19 +349,19 @@ TYPE Arvore<TYPE>::busca(const TYPE &item){
 template <class TYPE>
 TYPE Arvore<TYPE>::ajudanteDeBusca(NoArvore<TYPE> **ptr, const TYPE &item){
     if(*ptr == 0){
-        return -1;
+        return "-1";
         cout << "item nao encontrado";
     }
-    if(item == (*ptr)->data){
-        return (*ptr)->data;
+    if(item == (*ptr)->getData()){
+        return (*ptr)->getData();
     }
 
     else{
-        if(item < (*ptr)->data){
+        if(item < (*ptr)->getData()){
             ajudanteDeBusca(&((*ptr)->ptrEsquedo), item);
         }
         else{
-            if(item > (*ptr)->data){
+            if(item > (*ptr)->getData()){
                 ajudanteDeBusca(&((*ptr)->ptrDireito), item);
             }
         }
@@ -359,15 +383,15 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
 
     }
     else{
-        if(valor < (*ptr)->data){
+        if(valor < (*ptr)->getData()){
             ajudanteDeInsereNo(&((*ptr)->ptrEsquedo), valor);
         }
         else{
-            if(valor > (*ptr) -> data){
+            if(valor > (*ptr)->getData()){
                 ajudanteDeInsereNo(&((*ptr)->ptrDireito), valor);
             }
             else{
-                cout << valor << "duplicata" << endl;
+                cout << valor << " -duplicata" << endl;
             }
         }
     }
@@ -417,20 +441,33 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
 
 int main(){
 
-    // TabelaHash<Dupla> hash;
-    // hash.inserirElemento("e","d");
-    // cout << hash.buscarElemento("e");
+    //int valor;
+    string linha;
+    Arvore<string> arvore;
 
-    // int valor;
-    //
-    // Arvore<int> arvoreInt;
-    // cout << "insira 10 valores inteiros\n";
-    //
-    // for(int i = 0; i < 3; i++){
+    ifstream arquivo("teste.txt");
+    if (!arquivo.is_open()){
+        cout << "Falha na abertura do arquivo" << endl;
+        exit(1);
+    }
+    else{
+        while (getline (arquivo, linha)) {
+            arvore.insereNo(linha);
+            cout << linha << '\n';
+        }
+    }
+    cout << "\nResultado da busca: " << arvore.busca("chave") << endl;
+
+    arquivo.close();
+
+
+    //cout << "insira 10 valores inteiros\n";
+
+    // for(int i = 0; i < 10; i++){
     //     cin >> valor;
-    //     arvoreInt.insereNo(valor);
     // }
-    // cout << arvoreInt.busca(2);
+
+
     // cout << "\nPre ordem\n";
     // arvoreInt.percorrePreOrdem();
     // cout << "\n\nCentral\n";
