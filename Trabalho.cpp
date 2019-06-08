@@ -258,7 +258,21 @@ public:
     int hash(string);
     void inserirElemento(const string &);
     string buscarElemento(const string &chave);
+    int getTamanhoString();
+    int setTamanhoString(int &);
 };
+
+template<class TYPE>
+TabelaHash<TYPE>::setTamanhoString(int &tamanho){
+    this.tamanhoString = tamanho;
+}
+
+template<class TYPE>
+TabelaHash<TYPE>::getTamanhoString(){
+    return this.tamanhoString;
+}
+
+
 
 template<class TYPE>
 TabelaHash<TYPE>::TabelaHash(){
