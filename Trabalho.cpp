@@ -548,10 +548,10 @@ int main(){
 
     Arvore<int> arvoreInt;
 
-    arvoreInt.insereNo(1);
-    arvoreInt.insereNo(2);
-    arvoreInt.insereNo(3);
     arvoreInt.insereNo(4);
+    arvoreInt.insereNo(2);
+    arvoreInt.insereNo(5);
+    arvoreInt.insereNo(1);
 
     // ifstream arquivo("teste.txt");
     // if (!arquivo.is_open()){
