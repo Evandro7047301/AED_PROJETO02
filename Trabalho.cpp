@@ -310,6 +310,9 @@ public:
         altura = 0;
     }
 
+    int getAltura() const{
+        return altura;
+    }
     TYPE getData() const{
         return data;
     }
@@ -322,11 +325,11 @@ public:
     Arvore();
     ~Arvore(){}
 
-    int calculaAltura(NoArvore<TYPE>){
+    int calculaAltura(NoArvore<TYPE> &){
         if (ptrRaiz == 0)
             return -1;
         else
-            return ptrRaiz->altura;
+            return ptrRaiz->getAltura();
     }
 
     void insereNo(const TYPE &);
