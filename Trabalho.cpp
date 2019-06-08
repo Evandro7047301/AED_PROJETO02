@@ -345,8 +345,6 @@ public:
     Arvore();
     ~Arvore(){}
 
-    int calculaAltura(NoArvore<TYPE> &);
-
     void rodarDireita(NoArvore<TYPE> *a);
     void rodarEsquerda(NoArvore<TYPE> *a);
 
@@ -360,7 +358,7 @@ private:
     NoArvore <TYPE> *ptrRaiz;
 
     TYPE max(TYPE a, TYPE b);
-    int calcularAltura(NoArvore<TYPE> *no);
+    int calcularAltura(NoArvore<TYPE> **no);
     int getBalanco(NoArvore<TYPE> *no);
 
     TYPE ajudanteDeBusca (NoArvore <TYPE> **, const TYPE &);
@@ -382,11 +380,11 @@ TYPE Arvore<TYPE>::max(TYPE a, TYPE b){
 }
 
 template<class TYPE>
-int Arvore<TYPE>::calcularAltura(NoArvore<TYPE> *no){
+int Arvore<TYPE>::calcularAltura(NoArvore<TYPE> **no){
     if (no == 0)
     return 0;
     else
-    return no->getAltura();
+    return (*no)->getAltura();
 }
 
 template<class TYPE>
@@ -399,8 +397,8 @@ int getBalanco(NoArvore<TYPE> *no){
 
 template<class TYPE>
 void rodarDireita(NoArvore<TYPE> *a){
-    NoArvore *b = a->ptrEsquerdo;
-    NoArvore *temp = b->ptrDireito;
+    NoArvore<TYPE> *b = a->ptrEsquerdo;
+    NoArvore<TYPE> *temp = b->ptrDireito;
 
     b->ptrDireito = a;
     a->ptrEsquerdo = temp;
@@ -411,11 +409,11 @@ void rodarDireita(NoArvore<TYPE> *a){
 
 template<class TYPE>
 void rodarEsquerda(NoArvore<TYPE> *a){
-    NoArvore *b = a->ptrEsquerdo;
-    NoArvore *temp = b->ptrDireito;
+    NoArvore<TYPE> *b = a->ptrDireito;
+    NoArvore<TYPE> *temp = b->ptrEsquerdo;
 
-    b->ptrDireito = a;
-    a->ptrEsquerdo = temp;
+    b->ptrEsquerdo = a;
+    a->ptrDireito = temp;
 
     a->getAltura() = max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito) + 1);
     b->getAltura() = max(calcularAltura(b->ptrEsquerdo), calcularAltura(b->ptrDireito) + 1);
@@ -474,6 +472,24 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
                 cout << valor << " -duplicata" << endl;
             }
         }
+    }
+
+    (*ptr)->getAltura() = 1 + max(calcularAltura(&(*ptr)->ptrEsquerdo), calcularAltura(&(*ptr)->ptrDireito));
+
+    int balanco = getBalanco(&(*ptr));
+    if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
+        return rodarDireita(&(*ptr));
+    }
+    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
+        return rodarEsquerda(&(*ptr));
+    }
+    else if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
+        (*ptr)->ptrEsquerdo = rodarEsquerda(&(*ptr)->ptrEsquerdo);
+        return rodarDireita(&(*ptr));
+    }
+    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
+        (*ptr)->ptrDireito = rodarDireita(&(*ptr));
+        return rodarEsquerda(&(*ptr));
     }
 }
 
