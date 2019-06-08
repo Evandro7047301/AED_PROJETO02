@@ -259,16 +259,16 @@ public:
     void inserirElemento(const string &);
     string buscarElemento(const string &chave);
     int getTamanhoString();
-    int setTamanhoString(int &);
+    void setTamanhoString(int &);
 };
 
 template<class TYPE>
-TabelaHash<TYPE>::setTamanhoString(int &tamanho){
+void TabelaHash<TYPE>::setTamanhoString(int &tamanho){
     this.tamanhoString = tamanho;
 }
 
 template<class TYPE>
-TabelaHash<TYPE>::getTamanhoString(){
+int TabelaHash<TYPE>::getTamanhoString(){
     return this.tamanhoString;
 }
 
@@ -345,8 +345,8 @@ public:
     Arvore();
     ~Arvore(){}
 
-    void rodarDireita(NoArvore<TYPE> *a);
-    void rodarEsquerda(NoArvore<TYPE> *a);
+    NoArvore<TYPE> *rodarDireita(NoArvore<TYPE> *a);
+    NoArvore<TYPE> *rodarEsquerda(NoArvore<TYPE> *a);
 
     void insereNo(const TYPE &);
     TYPE busca(const TYPE &);
@@ -357,12 +357,12 @@ public:
 private:
     NoArvore <TYPE> *ptrRaiz;
 
-    TYPE max(TYPE &, TYPE &);
+    int max(const int &, const int &);
     int calcularAltura(NoArvore<TYPE> *);
     int getBalanco(NoArvore<TYPE> *);
 
     TYPE ajudanteDeBusca (NoArvore <TYPE> **, const TYPE &);
-    void ajudanteDeInsereNo (NoArvore <TYPE> **, const TYPE &);
+    NoArvore<TYPE> *ajudanteDeInsereNo (NoArvore <TYPE> **, const TYPE &);
     void ajudantePercorrePreOrdem (NoArvore <TYPE> *) const;
     // void ajudantePercorreCentral (NoArvore <TYPE> *) const;
     // void ajudantePercorrePosOrdem (NoArvore <TYPE> *) const;
@@ -375,7 +375,7 @@ Arvore<TYPE>::Arvore(){
 }
 
 template<class TYPE>
-TYPE Arvore<TYPE>::max(TYPE &a, TYPE &b){
+int Arvore<TYPE>::max(const int &a, const int &b){
     return ((a > b) ? a : b);
 }
 
@@ -388,7 +388,7 @@ int Arvore<TYPE>::calcularAltura(NoArvore<TYPE> *no){
 }
 
 template<class TYPE>
-int getBalanco(NoArvore<TYPE> *no){
+int Arvore<TYPE>::getBalanco(NoArvore<TYPE> *no){
     if (no == 0)
         return 0;
     else
@@ -396,27 +396,31 @@ int getBalanco(NoArvore<TYPE> *no){
 }
 
 template<class TYPE>
-void rodarDireita(NoArvore<TYPE> *a){
+NoArvore<TYPE> *Arvore<TYPE>::rodarDireita(NoArvore<TYPE> *a){
     NoArvore<TYPE> *b = a->ptrEsquerdo;
     NoArvore<TYPE> *temp = b->ptrDireito;
 
     b->ptrDireito = a;
     a->ptrEsquerdo = temp;
 
-    a->getAltura() = max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito) + 1);
-    b->getAltura() = max(calcularAltura(b->ptrEsquerdo), calcularAltura(b->ptrDireito) + 1);
+    a->setAltura(max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito) + 1));
+    b->setAltura(max(calcularAltura(b->ptrEsquerdo), calcularAltura(b->ptrDireito) + 1));
+
+    return b;
 }
 
 template<class TYPE>
-void rodarEsquerda(NoArvore<TYPE> *a){
+NoArvore<TYPE> *Arvore<TYPE>::rodarEsquerda(NoArvore<TYPE> *a){
     NoArvore<TYPE> *b = a->ptrDireito;
     NoArvore<TYPE> *temp = b->ptrEsquerdo;
 
     b->ptrEsquerdo = a;
     a->ptrDireito = temp;
 
-    a->getAltura() = max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito) + 1);
-    b->getAltura() = max(calcularAltura(b->ptrEsquerdo), calcularAltura(b->ptrDireito) + 1);
+    a->setAltura(max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito) + 1));
+    b->setAltura(max(calcularAltura(b->ptrEsquerdo), calcularAltura(b->ptrDireito) + 1));
+
+    return a;
 }
 
 template <class TYPE>
@@ -455,7 +459,7 @@ void Arvore<TYPE>::insereNo(const TYPE &valor){
 }
 
 template <class TYPE>
-void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
+NoArvore<TYPE> *Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
     if(*ptr == 0){
         *ptr = new NoArvore<TYPE>(valor);
 
@@ -474,23 +478,24 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
         }
     }
 
-    *(ptr)->getAltura() = 1 + max(calcularAltura(*ptr->ptrEsquerdo), calcularAltura(*ptr->ptrDireito));
+    (*ptr)->setAltura(1 + max(calcularAltura((*ptr)->ptrEsquerdo), calcularAltura((*ptr)->ptrDireito)));
 
     int balanco = getBalanco(*ptr);
-    if (balanco > 1 && *ptr->getData() < *ptr->ptrEsquerdo->getData()){
+    if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
         return rodarDireita(*ptr);
     }
-    else if (balanco < -1 && *ptr->getData() < *ptr->ptrDireito->getData()){
+    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
         return rodarEsquerda(*ptr);
     }
-    else if (balanco > 1 && (*ptr)->getData() < *ptr->ptrEsquerdo->getData()){
-        (*ptr)->ptrEsquerdo = rodarEsquerda(*ptr->ptrEsquerdo);
+    else if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
+        (*ptr)->ptrEsquerdo = rodarEsquerda((*ptr)->ptrEsquerdo);
         return rodarDireita(*ptr);
     }
-    else if (balanco < -1 && *ptr->getData() < *ptr->ptrDireito->getData()){
-        (*ptr)->ptrDireito = rodarDireita(*ptr);
+    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
+        (*ptr)->ptrDireito = rodarDireita((*ptr)->ptrDireito);
         return rodarEsquerda(*ptr);
     }
+    cout<< "teste";
 }
 
 template <class TYPE>
@@ -539,24 +544,31 @@ int main(){
 
     //int valor;
     string linha;
-    Arvore<string> arvore;
+    // Arvore<string> arvore;
 
-    ifstream arquivo("teste.txt");
-    if (!arquivo.is_open()){
-        cout << "Falha na abertura do arquivo" << endl;
-        exit(1);
-    }
-    else{
-        while (getline (arquivo, linha)) {
-            arvore.insereNo(linha);
-            cout << linha << '\n';
-        }
-    }
+    Arvore<int> arvoreInt;
+
+    arvoreInt.insereNo(1);
+    arvoreInt.insereNo(2);
+    arvoreInt.insereNo(3);
+    arvoreInt.insereNo(4);
+
+    // ifstream arquivo("teste.txt");
+    // if (!arquivo.is_open()){
+    //     cout << "Falha na abertura do arquivo" << endl;
+    //     exit(1);
+    // }
+    // else{
+    //     while (getline (arquivo, linha)) {
+    //         arvore.insereNo(linha);
+    //         cout << linha << '\n';
+    //     }
+    // }
     cout << "\nPercorrer...\n";
-    arvore.percorrePreOrdem();
-    cout << "\nResultado da busca: " << arvore.busca("chave") << endl;
+    arvoreInt.percorrePreOrdem();
+    // cout << "\nResultado da busca: " << arvore.busca("chave") << endl;
 
-    arquivo.close();
+    // arquivo.close();
 
 
     //cout << "insira 10 valores inteiros\n";
