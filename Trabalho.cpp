@@ -357,9 +357,9 @@ public:
 private:
     NoArvore <TYPE> *ptrRaiz;
 
-    TYPE max(TYPE a, TYPE b);
-    int calcularAltura(NoArvore<TYPE> **no);
-    int getBalanco(NoArvore<TYPE> *no);
+    TYPE max(TYPE &, TYPE &);
+    int calcularAltura(NoArvore<TYPE> *);
+    int getBalanco(NoArvore<TYPE> *);
 
     TYPE ajudanteDeBusca (NoArvore <TYPE> **, const TYPE &);
     void ajudanteDeInsereNo (NoArvore <TYPE> **, const TYPE &);
@@ -375,16 +375,16 @@ Arvore<TYPE>::Arvore(){
 }
 
 template<class TYPE>
-TYPE Arvore<TYPE>::max(TYPE a, TYPE b){
+TYPE Arvore<TYPE>::max(TYPE &a, TYPE &b){
     return ((a > b) ? a : b);
 }
 
 template<class TYPE>
-int Arvore<TYPE>::calcularAltura(NoArvore<TYPE> **no){
+int Arvore<TYPE>::calcularAltura(NoArvore<TYPE> *no){
     if (no == 0)
     return 0;
     else
-    return (*no)->getAltura();
+    return no->getAltura();
 }
 
 template<class TYPE>
@@ -474,22 +474,22 @@ void Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYPE &valor){
         }
     }
 
-    (*ptr)->getAltura() = 1 + max(calcularAltura(&(*ptr)->ptrEsquerdo), calcularAltura(&(*ptr)->ptrDireito));
+    *(ptr)->getAltura() = 1 + max(calcularAltura(*ptr->ptrEsquerdo), calcularAltura(*ptr->ptrDireito));
 
-    int balanco = getBalanco(&(*ptr));
-    if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
-        return rodarDireita(&(*ptr));
+    int balanco = getBalanco(*ptr);
+    if (balanco > 1 && *ptr->getData() < *ptr->ptrEsquerdo->getData()){
+        return rodarDireita(*ptr);
     }
-    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
-        return rodarEsquerda(&(*ptr));
+    else if (balanco < -1 && *ptr->getData() < *ptr->ptrDireito->getData()){
+        return rodarEsquerda(*ptr);
     }
-    else if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
-        (*ptr)->ptrEsquerdo = rodarEsquerda(&(*ptr)->ptrEsquerdo);
-        return rodarDireita(&(*ptr));
+    else if (balanco > 1 && (*ptr)->getData() < *ptr->ptrEsquerdo->getData()){
+        (*ptr)->ptrEsquerdo = rodarEsquerda(*ptr->ptrEsquerdo);
+        return rodarDireita(*ptr);
     }
-    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
-        (*ptr)->ptrDireito = rodarDireita(&(*ptr));
-        return rodarEsquerda(&(*ptr));
+    else if (balanco < -1 && *ptr->getData() < *ptr->ptrDireito->getData()){
+        (*ptr)->ptrDireito = rodarDireita(*ptr);
+        return rodarEsquerda(*ptr);
     }
 }
 
@@ -501,7 +501,7 @@ void Arvore<TYPE>::percorrePreOrdem() const{
 template <class TYPE>
 void Arvore<TYPE>::ajudantePercorrePreOrdem(NoArvore<TYPE> *ptr) const{
     if(ptr != 0){
-        cout << ptr->getData()<<' ';
+        cout << ptr->getData()<<'\n';
         ajudantePercorrePreOrdem(ptr->ptrEsquerdo);
         ajudantePercorrePreOrdem(ptr->ptrDireito);
     }
@@ -531,7 +531,7 @@ void Arvore<TYPE>::ajudantePercorrePreOrdem(NoArvore<TYPE> *ptr) const{
 //     if(ptr != 0){
 //         ajudantePercorrePosOrdem(ptr->ptrEsquerdo);
 //         ajudantePercorrePosOrdem(ptr->ptrDireito);
-//         cout << ptr -> getData() << ' ';
+//         cout << ptr -> getData() << '\n';
 //     }
 // }
 
