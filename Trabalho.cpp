@@ -321,7 +321,7 @@ public:
         ptrEsquerdo = 0;
         data = d;
         ptrDireito = 0;
-        altura = 0;
+        altura = 1;
     }
 
     int getAltura() const{
@@ -478,23 +478,23 @@ NoArvore<TYPE> *Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYP
         }
     }
 
-    (*ptr)->setAltura(1 + max(calcularAltura((*ptr)->ptrEsquerdo), calcularAltura((*ptr)->ptrDireito)));
-
-    int balanco = getBalanco(*ptr);
-    if (balanco > 1 && valor < (*ptr)->ptrEsquerdo->getData()){
-        return rodarDireita(*ptr);
-    }
-    else if (balanco < -1 && valor < (*ptr)->ptrDireito->getData()){
-        return rodarEsquerda(*ptr);
-    }
-    else if (balanco > 1 && valor < (*ptr)->ptrEsquerdo->getData()){
-        (*ptr)->ptrEsquerdo = rodarEsquerda((*ptr)->ptrEsquerdo);
-        return rodarDireita(*ptr);
-    }
-    else if (balanco < -1 && valor < (*ptr)->ptrDireito->getData()){
-        (*ptr)->ptrDireito = rodarDireita((*ptr)->ptrDireito);
-        return rodarEsquerda(*ptr);
-    }
+    // (*ptr)->setAltura(1 + max(calcularAltura((*ptr)->ptrEsquerdo), calcularAltura((*ptr)->ptrDireito)));
+    //
+    // int balanco = getBalanco(*ptr);
+    // if (balanco > 1 && valor < (*ptr)->ptrEsquerdo->getData()){
+    //     return rodarDireita(*ptr);
+    // }
+    // else if (balanco < -1 && valor > (*ptr)->ptrDireito->getData()){
+    //     return rodarEsquerda(*ptr);
+    // }
+    // else if (balanco > 1 && valor > (*ptr)->ptrEsquerdo->getData()){
+    //     (*ptr)->ptrEsquerdo = rodarEsquerda((*ptr)->ptrEsquerdo);
+    //     return rodarDireita(*ptr);
+    // }
+    // else if (balanco < -1 && valor < (*ptr)->ptrDireito->getData()){
+    //     (*ptr)->ptrDireito = rodarDireita((*ptr)->ptrDireito);
+    //     return rodarEsquerda(*ptr);
+    // }
 }
 
 template <class TYPE>
@@ -548,13 +548,27 @@ int main(){
     Arvore<int> arvoreInt;
 
     arvoreInt.insereNo(1);
+    arvoreInt.percorrePreOrdem();
+    cout << endl;
     arvoreInt.insereNo(-2);
+    arvoreInt.percorrePreOrdem();
+    cout << endl;
+    arvoreInt.insereNo(-3);
+    arvoreInt.percorrePreOrdem();
+    cout << endl;
     arvoreInt.insereNo(-1);
-    arvoreInt.insereNo(4);
+    arvoreInt.percorrePreOrdem();
+    cout << endl;
     arvoreInt.insereNo(5);
+    arvoreInt.percorrePreOrdem();
+    cout << endl;
     arvoreInt.insereNo(6);
+    arvoreInt.percorrePreOrdem();
+    cout << endl;
     arvoreInt.insereNo(7);
-    cout << arvoreInt.ptrRaiz->getData();
+    arvoreInt.percorrePreOrdem();
+    cout << endl;
+    cout << "Raiz: " << arvoreInt.ptrRaiz->getData();
     // ifstream arquivo("teste.txt");
     // if (!arquivo.is_open()){
     //     cout << "Falha na abertura do arquivo" << endl;
@@ -571,6 +585,8 @@ int main(){
     // cout << "\nResultado da busca: " << arvore.busca("chave") << endl;
 
     // arquivo.close();
+
+
 
 
     //cout << "insira 10 valores inteiros\n";
