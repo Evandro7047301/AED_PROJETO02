@@ -354,8 +354,8 @@ public:
     // void percorreCentral () const;
     // void percorrePosOrdem () const;
 
-private:
     NoArvore <TYPE> *ptrRaiz;
+private:
 
     int max(const int &, const int &);
     int calcularAltura(NoArvore<TYPE> *);
@@ -382,9 +382,9 @@ int Arvore<TYPE>::max(const int &a, const int &b){
 template<class TYPE>
 int Arvore<TYPE>::calcularAltura(NoArvore<TYPE> *no){
     if (no == 0)
-    return 0;
+        return 0;
     else
-    return no->getAltura();
+        return no->getAltura();
 }
 
 template<class TYPE>
@@ -481,21 +481,20 @@ NoArvore<TYPE> *Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYP
     (*ptr)->setAltura(1 + max(calcularAltura((*ptr)->ptrEsquerdo), calcularAltura((*ptr)->ptrDireito)));
 
     int balanco = getBalanco(*ptr);
-    if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
+    if (balanco > 1 && valor < (*ptr)->ptrEsquerdo->getData()){
         return rodarDireita(*ptr);
     }
-    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
+    else if (balanco < -1 && valor < (*ptr)->ptrDireito->getData()){
         return rodarEsquerda(*ptr);
     }
-    else if (balanco > 1 && (*ptr)->getData() < (*ptr)->ptrEsquerdo->getData()){
+    else if (balanco > 1 && valor < (*ptr)->ptrEsquerdo->getData()){
         (*ptr)->ptrEsquerdo = rodarEsquerda((*ptr)->ptrEsquerdo);
         return rodarDireita(*ptr);
     }
-    else if (balanco < -1 && (*ptr)->getData() < (*ptr)->ptrDireito->getData()){
+    else if (balanco < -1 && valor < (*ptr)->ptrDireito->getData()){
         (*ptr)->ptrDireito = rodarDireita((*ptr)->ptrDireito);
         return rodarEsquerda(*ptr);
     }
-    cout<< "teste";
 }
 
 template <class TYPE>
@@ -548,11 +547,14 @@ int main(){
 
     Arvore<int> arvoreInt;
 
-    arvoreInt.insereNo(4);
-    arvoreInt.insereNo(2);
-    arvoreInt.insereNo(5);
     arvoreInt.insereNo(1);
-
+    arvoreInt.insereNo(-2);
+    arvoreInt.insereNo(-1);
+    arvoreInt.insereNo(4);
+    arvoreInt.insereNo(5);
+    arvoreInt.insereNo(6);
+    arvoreInt.insereNo(7);
+    cout << arvoreInt.ptrRaiz->getData();
     // ifstream arquivo("teste.txt");
     // if (!arquivo.is_open()){
     //     cout << "Falha na abertura do arquivo" << endl;
