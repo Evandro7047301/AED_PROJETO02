@@ -482,7 +482,6 @@ NoArvore<TYPE> *Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYP
 
     int balanco = getBalanco(*ptr);
     if (balanco > 1 && valor < (*ptr)->ptrEsquerdo->getData()){
-        
         return rodarDireita(*ptr);
     }
     else if (balanco < -1 && valor < (*ptr)->ptrDireito->getData()){
