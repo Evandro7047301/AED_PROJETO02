@@ -398,13 +398,12 @@ int Arvore<TYPE>::getBalanco(NoArvore<TYPE> *no){
 template<class TYPE>
 NoArvore<TYPE> *Arvore<TYPE>::rodarDireita(NoArvore<TYPE> *a){
     NoArvore<TYPE> *b = a->ptrEsquerdo;
-    NoArvore<TYPE> *temp = b->ptrDireito;
+    a->ptrEsquerdo = b->ptrDireito;
 
     b->ptrDireito = a;
-    a->ptrEsquerdo = temp;
 
-    a->setAltura(max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito) + 1));
-    b->setAltura(max(calcularAltura(b->ptrEsquerdo), calcularAltura(b->ptrDireito) + 1));
+    a->setAltura(max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito)) + 1);
+    b->setAltura(max(calcularAltura(b->ptrEsquerdo), a->getAltura()) + 1);
 
     return b;
 }
@@ -412,13 +411,12 @@ NoArvore<TYPE> *Arvore<TYPE>::rodarDireita(NoArvore<TYPE> *a){
 template<class TYPE>
 NoArvore<TYPE> *Arvore<TYPE>::rodarEsquerda(NoArvore<TYPE> *a){
     NoArvore<TYPE> *b = a->ptrDireito;
-    NoArvore<TYPE> *temp = b->ptrEsquerdo;
+    a->ptrDireito = b->ptrEsquerdo;
 
     b->ptrEsquerdo = a;
-    a->ptrDireito = temp;
 
-    a->setAltura(max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito) + 1));
-    b->setAltura(max(calcularAltura(b->ptrEsquerdo), calcularAltura(b->ptrDireito) + 1));
+    a->setAltura(max(calcularAltura(a->ptrEsquerdo), calcularAltura(a->ptrDireito)) + 1);
+    b->setAltura(max(calcularAltura(b->ptrDireito), a->getAltura()) + 1);
 
     return a;
 }
@@ -478,7 +476,7 @@ NoArvore<TYPE> *Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE> **ptr, const TYP
         }
     }
 
-    // (*ptr)->setAltura(1 + max(calcularAltura((*ptr)->ptrEsquerdo), calcularAltura((*ptr)->ptrDireito)));
+    //(*ptr)->setAltura(1 + max(calcularAltura((*ptr)->ptrEsquerdo), calcularAltura((*ptr)->ptrDireito)));
     //
     // int balanco = getBalanco(*ptr);
     // if (balanco > 1 && valor < (*ptr)->ptrEsquerdo->getData()){

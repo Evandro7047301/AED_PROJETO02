@@ -1,0 +1,46 @@
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp: In instantiation of 'NoArvore<TYPE>* Arvore<TYPE>::rodarEsquerdaDireita(NoArvore<TYPE>**) [with TYPE = int]':
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:485:44:   required from 'NoArvore<TYPE>* Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE>**, const TYPE&) [with TYPE = int]'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:470:23:   required from 'void Arvore<TYPE>::insereNo(const TYPE&) [with TYPE = int]'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:572:25:   required from here
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:434:38: error: no matching function for call to 'Arvore<int>::rodarEsquerda(NoArvore<int>*&)'
+     (*a)->ptrEsquerdo = rodarEsquerda((*a)->ptrEsquerdo);
+                         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:414:17: note: candidate: NoArvore<TYPE>* Arvore<TYPE>::rodarEsquerda(NoArvore<TYPE>**) [with TYPE = int]
+ NoArvore<TYPE> *Arvore<TYPE>::rodarEsquerda(NoArvore<TYPE> **a){
+                 ^~~~~~~~~~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:414:17: note:   no known conversion for argument 1 from 'NoArvore<int>*' to 'NoArvore<int>**'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:435:24: error: no matching function for call to 'Arvore<int>::rodarDireita(NoArvore<int>*&)'
+     return rodarDireita(*a);
+            ~~~~~~~~~~~~^~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:401:17: note: candidate: NoArvore<TYPE>* Arvore<TYPE>::rodarDireita(NoArvore<TYPE>**) [with TYPE = int]
+ NoArvore<TYPE> *Arvore<TYPE>::rodarDireita(NoArvore<TYPE> **a){
+                 ^~~~~~~~~~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:401:17: note:   no known conversion for argument 1 from 'NoArvore<int>*' to 'NoArvore<int>**'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp: In instantiation of 'NoArvore<TYPE>* Arvore<TYPE>::rodarEsquerda(NoArvore<TYPE>**) [with TYPE = int]':
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:494:37:   required from 'NoArvore<TYPE>* Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE>**, const TYPE&) [with TYPE = int]'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:470:23:   required from 'void Arvore<TYPE>::insereNo(const TYPE&) [with TYPE = int]'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:572:25:   required from here
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:418:20: error: cannot convert 'NoArvore<int>**' to 'NoArvore<int>*' in assignment
+     b->ptrEsquerdo = a;
+     ~~~~~~~~~~~~~~~^~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:423:12: error: cannot convert 'NoArvore<int>**' to 'NoArvore<int>*' in return
+     return a;
+            ^
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp: In instantiation of 'NoArvore<TYPE>* Arvore<TYPE>::rodarDireitaEsquerda(NoArvore<TYPE>**) [with TYPE = int]':
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:496:44:   required from 'NoArvore<TYPE>* Arvore<TYPE>::ajudanteDeInsereNo(NoArvore<TYPE>**, const TYPE&) [with TYPE = int]'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:470:23:   required from 'void Arvore<TYPE>::insereNo(const TYPE&) [with TYPE = int]'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:572:25:   required from here
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:428:36: error: no matching function for call to 'Arvore<int>::rodarDireita(NoArvore<int>*&)'
+     (*a)->ptrDireito = rodarDireita((*a)->ptrDireito);
+                        ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:401:17: note: candidate: NoArvore<TYPE>* Arvore<TYPE>::rodarDireita(NoArvore<TYPE>**) [with TYPE = int]
+ NoArvore<TYPE> *Arvore<TYPE>::rodarDireita(NoArvore<TYPE> **a){
+                 ^~~~~~~~~~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:401:17: note:   no known conversion for argument 1 from 'NoArvore<int>*' to 'NoArvore<int>**'
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:429:25: error: no matching function for call to 'Arvore<int>::rodarEsquerda(NoArvore<int>*&)'
+     return rodarEsquerda(*a);
+            ~~~~~~~~~~~~~^~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:414:17: note: candidate: NoArvore<TYPE>* Arvore<TYPE>::rodarEsquerda(NoArvore<TYPE>**) [with TYPE = int]
+ NoArvore<TYPE> *Arvore<TYPE>::rodarEsquerda(NoArvore<TYPE> **a){
+                 ^~~~~~~~~~~~
+C:\Users\vinic\Desktop\Git\AED_PROJETO02\Trabalho.cpp:414:17: note:   no known conversion for argument 1 from 'NoArvore<int>*' to 'NoArvore<int>**'
