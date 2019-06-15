@@ -355,13 +355,13 @@ private:
 
     NoArvore<TYPE> *ajudanteDeInsereNo (NoArvore <TYPE> *, const TYPE valor);
     void ajudantePercorrePreOrdem (NoArvore <TYPE> *) const;
-    NoArvore<int>* novoNoArvore(const int d);
+    NoArvore<TYPE>* novoNoArvore(const TYPE &);
 
 };
 
 template <class TYPE>
-NoArvore<int>* Arvore<TYPE>::novoNoArvore(const int d){
-    NoArvore<int>* no = new NoArvore<int>();
+NoArvore<TYPE>* Arvore<TYPE>::novoNoArvore(const TYPE &d){
+    NoArvore<TYPE>* no = new NoArvore<TYPE>();
     no->data = d;
     no->ptrEsquerdo = NULL;
     no->ptrDireito = NULL;
